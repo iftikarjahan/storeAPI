@@ -1,3 +1,4 @@
+require('express-async-errors');  //using this you wont need the try-catch block to handle the errors
 require("dotenv").config();
 const express = require("express");
 const app = express();
