@@ -5,10 +5,17 @@ const port = process.env.PORT || 3003;
 const notFound = require("./middleware/notFound");
 const errorHandlingMiddleware = require("./middleware/errorHandler");
 const connectDb = require("./db/connect");
+const productsRouter=require("./routes/products");
 
-app.use("/store", (req, res, next) => {
-  res.send("<h1>Welcomeee</h1>");
+
+app.get('/', (req, res) => {
+  res.send('<h1>Store API</h1><a href="/api/v1/products">products route</a>');
 });
+
+// app.use("/api/v1/products",(req,res,next)=>{
+//   res.send("<h1>Papa Papa</h1>")
+// });
+app.use("/api/v1/products",productsRouter);
 
 app.use(notFound);
 app.use(errorHandlingMiddleware);
