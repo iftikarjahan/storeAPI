@@ -18,7 +18,7 @@ const getAllProductsStatic=async(req,res,next)=>{
 }
 
 const getAllProducts=async(req,res,next)=>{
-    const {featured,company,name,sort}=req.query;
+    const {featured,company,name,sort,fields}=req.query;
     let queryObject={};
     if(featured){
         queryObject.featured=featured
@@ -45,7 +45,20 @@ const getAllProducts=async(req,res,next)=>{
     the await syntax
     ->This gives you flexibility to chain multiple methods together
     */ 
-    console.log(typeof(result));   //object
+    if(fields){
+        fieldsList=fields.split(",").join(" ");
+        result.select(fieldsList);
+    }
+    // setting up the pagination feature
+    let pageNo=Number(req.query.pageNo) || 1;
+    let limit=Number(req.query.limit) || 4;
+    let skip=(pageNo-1) * limit;
+
+    console.log(pageNo,limit,skip);
+    
+    result=result.skip(skip).limit(limit);
+    
+    // console.log(typeof(result));   //object
     
     const products=await result;
     res.status(200).json({products:products,nbHits:products.length});
